@@ -10,9 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection string (replace <your_connection_string> with your own)
-const mongoUri = process.env.MONGODB_URI; // or use your MongoDB Atlas URI
-
+// MongoDB connection string 
+const mongoUri = process.env.MONGODB_URI;
 // Connect to MongoDB
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
