@@ -23,6 +23,47 @@ mongoose.connect(mongoUri, {
     console.error('Error connecting to MongoDB:', err.message);
 });
 
+// Define a User schema
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+});
+
+// Create a User model
+const User = mongoose.model('User', userSchema);
+
+// CRUD Routes
+
+// CREATE: Add a new user
+app.post('/users', async (req, res) => {
+    try {
+        const { name, email } = req.body;
+        const newUser = new User({ name, email });
+        await newUser.save();
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// READ: Get all users
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 // Start the server
 app.listen(3000, () => {
     console.log('Server running on port 3000');
